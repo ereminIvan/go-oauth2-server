@@ -1,4 +1,5 @@
 package model
+import "github.com/ereminIvan/go-oauth2-server/api/service/storage"
 
 type Session struct {
 	ID           uint64
@@ -10,8 +11,8 @@ type Session struct {
 	refreshToken RefreshToken            //Refresh token
 	scopes       map[uint64]Scope        //Session scopes
 
-	StorageImpl ISessionStorage
-	ClientStorageImpl IClientStorage
+	StorageImpl storage.ISession
+	ClientStorageImpl storage.IClient
 }
 
 type ISession interface {
@@ -21,19 +22,7 @@ type ISession interface {
 	HasScope(scope Scope) bool
 	GetScopes() map[uint64]Scope
 	AssociateAccessToken(token AccessToken) error
-	GetStorage() ISessionStorage
-}
-
-type ISessionStorage interface {
-	GetByAccessToken(token AccessToken) (Session, error) //Get a session from an access token
-	GetByAuthCode(authCode AuthCode) (Session, error) //Get a session from an auth code
-	GetScopes(session Session) []Scope //Get a session's scopes
-	//ownerType - Session owner's type (user, client)
-	//ownerID - Session owner's ID
-	//clientID - Client ID
-	//clientRedirectURI - Client redirect URI (default = null)
-	Create(ownerType string, ownerID uint64, clientID, clientRedirectURI string) (uint64, error) //Create a new session
-	AssociateScope(session *Session, scope *Scope) error //Associate a scope with a session
+	GetStorage() storage.ISession
 }
 
 //AssociateScope Associate a scope

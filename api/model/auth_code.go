@@ -2,7 +2,8 @@ package model
 
 import (
 	"net/url"
-	"time"
+
+	"github.com/ereminIvan/go-oauth2-server/api/service/storage"
 )
 
 type AuthCode struct {
@@ -10,14 +11,7 @@ type AuthCode struct {
 
 	redirectURI url.URL
 
-	StorageImpl IAuthCodeStorage
-}
-
-type IAuthCodeStorage interface {
-	GetScopes(ac AuthCode) ([]Scope, error)
-	AssociateScope(ac AuthCode, scopes []Scope) error
-	Create(acID uint64, expiredTime time.Time, sessionID uint64, redirectURI url.URL) error
-	Delete(ac AuthCode) error
+	StorageImpl storage.IAuthCode
 }
 
 //SetRedirectURI Set the redirect URI for the authorization request

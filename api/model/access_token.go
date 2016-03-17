@@ -1,22 +1,14 @@
 package model
 
-import "time"
+import "github.com/ereminIvan/go-oauth2-server/api/service/storage"
 
 //AccessToken
 type AccessToken struct {
-	StorageImpl IAccessTokenStorage
+	StorageImpl storage.IAccessToken
 
 	CommonToken
 }
 
-//IAccessToken
-type IAccessTokenStorage interface {
-	Get(token string, *AccessToken) //Get an instance of AccessToken
-	Create(token string, expireTime time.Time, sessionID uint64) error//Creates a new access token
-	Delete(AccessToken) //Delete an access token
-	AssociateScope(token AccessToken, scope Scope)//Associate a scope with an access token
-	GetScopes(token AccessToken) //Get the scopes for an access token
-}
 
 //GetSession
 func (t *AccessToken) GetSession() (ISession, error) {

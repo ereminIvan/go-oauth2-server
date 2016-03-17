@@ -1,11 +1,12 @@
 package model
+import "github.com/ereminIvan/go-oauth2-server/api/service/storage"
 
 type Client struct {
 	id string //Client identifier
 	secret string //Client secret
 	name string //Client name
 	redirectURI string //Client redirect URI
-	StorageImpl IClientStorage //Authorization or resource server
+	StorageImpl storage.IClient //Authorization or resource server
 }
 
 type IClient interface {
@@ -13,10 +14,6 @@ type IClient interface {
 	GetSecret() string //Return the client secret
 	GetName() string //Get the client name
 	GetRedirectURI() string //Return the client redirect URI
-}
-
-type IClientStorage interface {
-	GetBySession(s *Session) (IClient, error)
 }
 
 //GetID
