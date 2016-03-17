@@ -1,9 +1,6 @@
 package model
 
-import (
-"time"
-"github.com/ereminIvan/go-oauth2-server/api/service/storage"
-)
+import "github.com/ereminIvan/go-oauth2-server/service/storage"
 
 
 //RefreshToken token entity

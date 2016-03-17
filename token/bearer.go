@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ereminIvan/go-oauth2-server/api/model"
+	"github.com/ereminIvan/go-oauth2-server/model"
 )
 
 var _ = &IToken{}

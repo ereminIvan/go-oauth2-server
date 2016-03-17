@@ -4,9 +4,9 @@ import (
 	"time"
 	"errors"
 
-	"github.com/ereminIvan/go-oauth2-server/api/token"
-	"github.com/ereminIvan/go-oauth2-server/api/grants"
-	"github.com/ereminIvan/go-oauth2-server/api/service/storage"
+	"github.com/ereminIvan/go-oauth2-server/token"
+	"github.com/ereminIvan/go-oauth2-server/grants"
+	"github.com/ereminIvan/go-oauth2-server/service/storage"
 )
 
 var (

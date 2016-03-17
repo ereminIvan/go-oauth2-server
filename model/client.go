@@ -1,5 +1,5 @@
 package model
-import "github.com/ereminIvan/go-oauth2-server/api/service/storage"
+import "github.com/ereminIvan/go-oauth2-server/service/storage"
 
 type Client struct {
 	id string //Client identifier

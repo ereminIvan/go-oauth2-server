@@ -3,7 +3,7 @@ package model
 import (
 	"net/url"
 
-	"github.com/ereminIvan/go-oauth2-server/api/service/storage"
+	"github.com/ereminIvan/go-oauth2-server/service/storage"
 )
 
 type AuthCode struct {

@@ -4,7 +4,7 @@ import (
 	"time"
 	"net/url"
 
-	"github.com/ereminIvan/go-oauth2-server/api/model"
+	"github.com/ereminIvan/go-oauth2-server/model"
 )
 
 type Service struct {
