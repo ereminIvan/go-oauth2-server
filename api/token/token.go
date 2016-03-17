@@ -3,7 +3,7 @@ package token
 import (
 	"net/http"
 
-	"github.com/ereminIvan/go-oauth2-server/entity"
+	"github.com/ereminIvan/go-oauth2-server/api/model"
 )
 
 type CommonToken struct {
@@ -12,10 +12,10 @@ type CommonToken struct {
 	expiredIn		string `json:"expired_in"`
 	refreshToken	string `json:"refresh_token"`
 
-	session entity.ISession
+	session model.ISession
 }
 
 type IToken interface {
-	SetSession(session entity.ISession) //Set Session
+	SetSession(session model.ISession) //Set Session
 	DetermineAccessTokenInHeader(request http.Request) string //Determine the access token in the authorization header
 }

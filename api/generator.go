@@ -12,13 +12,22 @@ const (
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-var src = rand.NewSource(time.Now().UnixNano())
+var _ IGenerator = &Generator{}
 
-func GenerateID(n int) string {
-	b := make([]byte, n)
-	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
+type IGenerator interface {
+	GetSource() rand.Source
+	Generate() string
+}
+
+type Generator struct {
+	Len int
+}
+
+func (g *Generator) Generate() string {
+	b := make([]byte, g.Len)
+	for i, cache, remain := g.Len-1, g.GetSource().Int63(), letterIdxMax; i >= 0; {
 		if remain == 0 {
-			cache, remain = src.Int63(), letterIdxMax
+			cache, remain = g.GetSource().Int63(), letterIdxMax
 		}
 		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
 			b[i] = letterBytes[idx]
@@ -29,4 +38,8 @@ func GenerateID(n int) string {
 	}
 
 	return string(b)
+}
+
+func (g *Generator) GetSource() rand.Source {
+	return rand.NewSource(time.Now().UnixNano())
 }

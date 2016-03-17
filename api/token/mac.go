@@ -3,7 +3,7 @@ package token
 import (
 	"net/http"
 
-	"github.com/ereminIvan/go-oauth2-server/entity"
+	"github.com/ereminIvan/go-oauth2-server/api/model"
 )
 
 var _ = &IToken{}
@@ -17,6 +17,6 @@ func (t *MAC) DetermineAccessTokenInHeader(request http.Request) string {
 	return ""
 }
 
-func (t *MAC) SetSession(session entity.Session) {
+func (t *MAC) SetSession(session model.ISession) {
 	t.session = session
 }

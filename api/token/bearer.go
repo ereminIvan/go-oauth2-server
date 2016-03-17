@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ereminIvan/go-oauth2-server/entity"
+	"github.com/ereminIvan/go-oauth2-server/api/model"
 )
 
 var _ = &IToken{}
+
+var tokenType = "Bearer"
 
 type Bearer struct {
 	CommonToken
@@ -19,12 +21,12 @@ func (t *Bearer) DetermineAccessTokenInHeader(request http.Request) string {
 		return ""
 	}
 
-	if strings.HasPrefix(header, "Bearer") {
-		return strings.TrimRight(header, "Bearer")
+	if strings.HasPrefix(header, tokenType) {
+		return strings.TrimRight(header, tokenType)
 	}
 	return ""
 }
 
-func (a *CommonToken) SetSession(session entity.Session) {
+func (a *CommonToken) SetSession(session model.ISession) {
 	a.session = session
 }
