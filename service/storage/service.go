@@ -19,6 +19,7 @@ type Service struct {
 
 type IClient interface {
 	GetBySession(s *model.Session) (model.IClient, error)
+	Get(clientID uint64, clientSecret string, redirectURI url.URL, grantType string)
 }
 
 type IScope interface {

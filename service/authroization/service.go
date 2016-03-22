@@ -1,18 +1,18 @@
 package authorization
 
 import (
-	"time"
 	"errors"
+	"time"
 
-	"github.com/ereminIvan/go-oauth2-server/token"
 	"github.com/ereminIvan/go-oauth2-server/grants"
 	"github.com/ereminIvan/go-oauth2-server/service/storage"
+	"github.com/ereminIvan/go-oauth2-server/token"
 )
 
 var (
-	ErrorInvalidGrantType = errors.New("Invalid Grant type")
+	ErrorInvalidGrantType  = errors.New("Invalid Grant type")
+	ErrorGrantTypeNotExist = errors.New("Current grant Type not exist")
 )
-
 
 type Service struct {
 	token *token.IToken
@@ -44,13 +44,14 @@ type IService interface {
 
 func NewService(t *token.IToken, ss *storage.Service) *Service {
 	return &Service{
-		token:t,
-		storageService:ss,
+		token:          t,
+		storageService: ss,
+		scopeDelimiter: " ",
 	}
 }
 
 //AddGrantType Add range of grant type to authorization service
-func (s *Service) AddGrantType(g ... grants.IGrant) {
+func (s *Service) AddGrantType(g ...grants.IGrant) {
 	for _, grant := range g {
 		if grant == nil {
 			return ErrorInvalidGrantType
@@ -58,8 +59,17 @@ func (s *Service) AddGrantType(g ... grants.IGrant) {
 		if len(s.grantTypes) {
 			s.grantTypes = make(map[string]grants.IGrant, len(g))
 		}
-		if _, ok :=  s.grantTypes[grant.GetIdentifier()]; !ok {
+		if _, ok := s.grantTypes[grant.GetIdentifier()]; !ok {
 			s.grantTypes[grant.GetIdentifier()] = grant
 		}
 	}
+}
+
+//GetGrantType Get grant type by string identifier
+func (s *Service) GetGrantType(g string) {
+	val, ok := s.grantTypes[g]
+	if !ok {
+		return ErrorGrantTypeNotExist
+	}
+	return val
 }

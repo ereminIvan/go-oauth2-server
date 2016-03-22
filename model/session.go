@@ -4,22 +4,22 @@ import "github.com/ereminIvan/go-oauth2-server/service/storage"
 
 type Session struct {
 	ID           uint64
-	client       Client                  //Session Client identifier
-	ownerID      uint64                  //Session owner identifier
-	ownerType    string                  //Session owner type (e.g. "user")
-	authCode     AuthCode                //Auth code
-	accessToken  AccessToken             //Access token
-	refreshToken RefreshToken            //Refresh token
-	scopes       map[uint64]Scope        //Session scopes
+	client       Client           //Session Client identifier
+	ownerID      uint64           //Session owner identifier
+	ownerType    string           //Session owner type (e.g. "user")
+	authCode     AuthCode         //Auth code
+	accessToken  AccessToken      //Access token
+	refreshToken RefreshToken     //Refresh token
+	scopes       map[uint64]Scope //Session scopes
 
-	StorageImpl storage.ISession
+	StorageImpl       storage.ISession
 	ClientStorageImpl storage.IClient
 }
 
 type ISession interface {
 	SetID(id uint64) error
 	GetID() uint64
-	AssociateScope(scope Scope) error
+	AssociateScope(scopes []Scope) error
 	HasScope(scope Scope) bool
 	GetScopes() map[uint64]Scope
 	AssociateAccessToken(token AccessToken) error
@@ -27,12 +27,15 @@ type ISession interface {
 }
 
 //AssociateScope Associate a scope
-func (s *Session) AssociateScope(scope Scope) {
-	if _, ok := s.scopes[scope.ID]; !ok {
-		s.scopes[scope.ID] = scope
+func (s *Session) AssociateScope(scopes []Scope) {
+	for _, scope := range scopes {
+		if _, ok := s.scopes[scope.ID]; !ok {
+			s.scopes[scope.ID] = scope
+		}
 	}
 	return nil
 }
+
 //HasScope Check if access token has an associated scope
 func (s *Session) HasScope(scope Scope) bool {
 	_, ok := s.scopes[scope.ID]

@@ -6,28 +6,30 @@ import (
 )
 
 const (
-	letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	letterBytes   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	letterIdxBits = 6                    // 6 bits to represent a letter index
 	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-var _ IGenerator = &Generator{}
+var _ IGenerator = &generator{}
 
+//IGenerator
 type IGenerator interface {
-	GetSource() rand.Source
 	Generate() string
 }
 
-type Generator struct {
-	Len int
+//Generator
+type generator struct {
+	len int
 }
 
-func (g *Generator) Generate() string {
-	b := make([]byte, g.Len)
-	for i, cache, remain := g.Len-1, g.GetSource().Int63(), letterIdxMax; i >= 0; {
+//Generate random string with Len
+func (g *generator) Generate() string {
+	b := make([]byte, g.len)
+	for i, cache, remain := g.len-1, g.getSource().Int63(), letterIdxMax; i >= 0; {
 		if remain == 0 {
-			cache, remain = g.GetSource().Int63(), letterIdxMax
+			cache, remain = g.getSource().Int63(), letterIdxMax
 		}
 		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
 			b[i] = letterBytes[idx]
@@ -40,6 +42,12 @@ func (g *Generator) Generate() string {
 	return string(b)
 }
 
-func (g *Generator) GetSource() rand.Source {
+//GetSource
+func (g *generator) getSource() rand.Source {
 	return rand.NewSource(time.Now().UnixNano())
+}
+
+//NewGenerator create new generator
+func NewGenerator(len int) string {
+	return &generator{len: len}
 }
